@@ -1,50 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        img {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 10px;
+        }
+        .product {
+            margin: 20px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .delete-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Adicionar Produto</h2>
+        <form action="/add" method="post">
+            <input type="text" name="url" placeholder="URL do Produto" required><br><br>
+            <button type="submit">Adicionar</button>
+        </form>
 
-    <html>
-    <head>
-        <title>Produto</title>
-        <style>
-            body {
-                font-family: 'Arial', sans-serif;
-                background-color: #f4f4f4;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                margin: 0;
-            }
-            .container {
-                background: white;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-                text-align: center;
-                max-width: 350px;
-                width: 90%;
-            }
-            img {
-                width: 100%;
-                max-width: 250px;
-                border-radius: 10px;
-                margin-bottom: 15px;
-            }
-            h1 {
-                font-size: 18px;
-                color: #333;
-                margin-bottom: 10px;
-            }
-            p {
-                font-size: 22px;
-                color: #27ae60;
-                font-weight: bold;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <img src="https://http2.mlstatic.com/D_NQ_NP_879919-MLB51338538709_082022-O.jpg" alt="Jg Teenage Mutant Ninja Turtles Cowabunga Collection Switch">
-            <h1>Jg Teenage Mutant Ninja Turtles Cowabunga Collection Switch</h1>
-            <p>R$ 173</p>
-        </div>
-    </body>
-    </html>
-    
+        <h2>Produtos Cadastrados</h2>
+        {% for product in products %}
+            <div class="product">
+                <img src="{{ product.image }}" alt="{{ product.name }}">
+                <h3>{{ product.name }}</h3>
+                <p>Preço: R$ {{ product.price }}</p>
+                {% if product.price == "Preço não encontrado" %}
+                    <p style="color: red;">⚠️ Preço não encontrado</p>
+                {% endif %}
+                <form action="/delete/{{ loop.index0 }}" method="post">
+                    <button type="submit" class="delete-btn">Excluir</button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
